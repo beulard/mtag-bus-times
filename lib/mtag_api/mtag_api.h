@@ -18,14 +18,14 @@
 // }
 
 class MData {
-private:
+ private:
   HTTPClient http;
   WiFiClientSecure client;
 
   String PROTOCOL = "https://";
   String HOST = "data.mobilites-m.fr";
 
-public:
+ public:
   String PALAIS = "SEM:0910";
   // Arret Trefforine direction Nord (Air Liquide)
   String TREFFORINE_NORD = "SEM:0613";
@@ -84,7 +84,6 @@ public:
         isContent = true;
       } else {
         // Header
-        Serial.print("Header: ");
         if (line.substring(0, 14).equalsIgnoreCase("Content-Length")) {
           String sub = line.substring(15);
           sub.trim();
@@ -113,22 +112,14 @@ public:
           char buf[2048];
           serializeJsonPretty(obj, buf);
           Serial.println(buf);
-          if (doc[i].containsKey("pattern")) {
-            Serial.println("Found key 'pattern'");
-            JsonObject pattern = doc[i]["pattern"];
-          }
-          if (doc[i].containsKey("times")) {
-            Serial.println("Found key 'times'");
-            JsonObject pattern = doc[i]["times"];
-          }
         }
       } else {
         Serial.println("Error deserializing JSON content !");
       }
-
-      client.stop();
-
-      return doc;
     }
+
+    client.stop();
+
+    return doc;
   }
 };
