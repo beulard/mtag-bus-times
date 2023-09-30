@@ -1,8 +1,12 @@
 /// Get information about a bus stop using the mtag api
+
+#pragma once
+
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
 #include <WiFiClient.h>
 #include <string_utils.h>
+#include <stub_api_response.h>
 
 // typedef int (*http_data_cb) (http_parser*, const char *at, size_t length);
 // static int on_http_body(http_parser *, const char *at, size_t length) {
@@ -33,17 +37,17 @@ class MData {
   String TREFFORINE_SUD = "SEM:0917";
 
   // Get the api endpoint for a given stop id
-  String getEndpoint(const String &stop_id) {
+  String getEndpoint(const String& stop_id) {
     return String("/api/routers/default/index/stops/") + stop_id +
            String("/stoptimes");
   }
 
   // Get the full URL for a given stop id
-  String getUrl(const String &stop_id) {
+  String getUrl(const String& stop_id) {
     return PROTOCOL + HOST + getEndpoint(stop_id);
   }
 
-  DynamicJsonDocument getStopTimes(const String &stop_id) {
+  DynamicJsonDocument getStopTimes(const String& stop_id) {
     String url = getUrl(stop_id);
     client.setInsecure();
     if (client.connect(HOST.c_str(), 443)) {
@@ -59,7 +63,7 @@ class MData {
     }
 
     // Buffer for the content
-    char *content = nullptr;
+    char* content = nullptr;
     // Content length as found in response header
     size_t contentLength = 0;
     bool isJson = false;
@@ -102,7 +106,7 @@ class MData {
     }
     if (contentLength > 0 && isJson) {
       // Content
-      DeserializationError err = deserializeJson(doc, client);
+      DeserializationError err = deserializeJson(doc, stub_json);
       Serial.println(err.c_str());
       if (err.code() == DeserializationError::Ok) {
         Serial.print("Doc size: ");
