@@ -106,7 +106,7 @@ class MData {
     }
     if (contentLength > 0 && isJson) {
       // Content
-      DeserializationError err = deserializeJson(doc, stub_json);
+      DeserializationError err = deserializeJson(doc, client);
       Serial.println(err.c_str());
       if (err.code() == DeserializationError::Ok) {
         Serial.print("Doc size: ");
