@@ -191,7 +191,7 @@ void updateDepartureTimes(const String& stop_id,
   DynamicJsonDocument doc = mdata.getStopTimes(stop_id);
   // Next departure times found in the API
   // 2 * 2: take at most two departures for each line
-  departure_t newDeps[2 * 2];
+  departure_t newDeps[max(2U, doc.size()) * 2];
 
   // Get next few stop times for line 19 or 20
   for (size_t i = 0; i < doc.size(); ++i) {
